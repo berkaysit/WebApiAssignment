@@ -7,7 +7,7 @@ namespace WebApiAssignment.Services
     public class CustomerService : ICustomerService
     {
         // Keeps static list for both controller
-        public static CustomerList customers = new CustomerList();
+        public static CustomerList customers = new CustomerList(); 
 
         // Set Default Customers into List (to set already existing customers)
         public CustomerList Customers()

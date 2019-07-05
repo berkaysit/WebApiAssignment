@@ -85,16 +85,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IAccountService.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AccountCreationPayload.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerList.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\TransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -107,7 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
