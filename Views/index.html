@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Web API Assignment</title>
+    <script src="../Scripts/jquery-3.4.1.min.js"></script>
+    <style>
+        .divStyle {
+            margin-left: 50px;
+            border: 1px solid black;
+            padding: 8px;
+            width: 50%;
+        }
+
+        .textBox {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Web API Assignment</h2>
+
+    <!-- Customer search form -->
+    <h4>End Point-1; Customers (GET Method):</h4>
+    <ul><li>URI: <code>/api/customers/</code></li></ul>
+    <div class="divStyle">
+        <form name="searchCustomerForm" id="searchCustomerForm">
+            <label>
+                CustomerID:
+                <input type="text" id="customerID" name="customerID" placeholder="ex: 1" class="textBox" />
+            </label>
+            <input type="button" onclick="searchCustomer()" value="Search Customer" />
+            <br /><b>Tip:</b> Do not enter any value to get all customers
+        </form>
+    </div>
+    <hr />
+
+    <!-- Account creation form -->
+    <h4>End Point-2; Accounts (POST Method):</h4>
+    <ul>
+        <li>URI: <code>/api/accounts/</code></li>
+        <li>Creates a new account for a given customer.</li>
+        <li>If initial credit is greater then 0, creates a new transaction record under the account.</li>
+    </ul>
+    <div class="divStyle">
+        <form name="createAccountForm" id="createAccountForm">
+            <label>
+                CustomerID:
+                <input type="text" id="xCustomerID" class="textBox" />
+            </label>
+            <label>
+                Initial Credit:
+                <input type="text" id="xInitialCredit" class="textBox" />
+            </label>
+            <input type="button" onclick="createAccount()" value="Create Account" />
+            <br /><b>Info:</b> Non-existing or empty CustomersID is handled by Web API
+
+        </form>
+    </div>
+    <hr />
+
+    <!-- Make Transaction form -->
+    <h4>End Point-3; Transactions (POST Method):</h4>
+    <ul>
+        <li>URI: <code>/api/transactions/</code></li>
+        <li>Make a new money transfer to existing account number.</li>
+        <li>Customers are kindly requested to create an account first.</li>
+    </ul>
+    <div class="divStyle">
+        <form name="transactionForm" id="transactionForm">
+            <label>
+                AccountNo:
+                <input type="text" id="accountNo" class="textBox" />
+            </label>
+            <label>
+                Initial Credit:
+                <input type="text" id="transInitialCredit" class="textBox" />
+            </label>
+            <input type="button" onclick="makeTransaction()" value="Make Transaction" />
+            <br /><b>Info:</b> Non-existing or empty AccountNo is handled by Web API
+
+        </form>
+    </div>
+    <hr />
+
+    <!-- The area where web service outputs are shown -->
+    <h3>Web Service Results: </h3>
+    <b>Tip:</b> Results are also logged in console (F12)
+
+    <pre id="info-area" style="background-color: antiquewhite; width:80%;">...</pre>
+
+    <!-- jQuery Scripting for GET and POST operations -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.getJSON("../api/customers", function (result) {
+                console.info(result);
+                prettifyJson(result);
+            });
+        });
+
+        function searchCustomer() {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "../api/customers/" + $("#customerID").val(),
+                success: function (result) {
+                    console.info(result);
+                    prettifyJson(result);
+                },
+                error: function (result) {
+                    errorMessage(result);
+                }
+            });
+        }
+
+        function createAccount() {
+            $.ajax({
+                type: 'POST',
+                url: '../api/accounts/',
+                data: JSON.stringify({
+                    "CustomerID": $('#xCustomerID').val(),
+                    "InitialCredit": $('#xInitialCredit').val()
+                }),
+                success: function (result) {
+                    console.info(result);
+                    prettifyJson(result);
+                },
+                error: function (result) {
+                    errorMessage(result);
+                },
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        }
+
+        function makeTransaction() {
+            $.ajax({
+                type: 'POST',
+                url: '../api/transactions/',
+                data: JSON.stringify({
+                    "AccountNo": $('#accountNo').val(),
+                    "TransferAmount": $('#transInitialCredit').val()
+                }),
+                success: function (result) {
+                    console.info(result);
+                    prettifyJson(result);
+                },
+                error: function (result) {
+                    errorMessage(result);
+                },
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        }
+
+        function prettifyJson(jsonText) {
+            var jsonPretty = JSON.stringify(jsonText, null, '\t');
+            $('#info-area').html(jsonPretty);
+        }
+        function errorMessage(result) {
+            $('#info-area').html('Status: ' + result.status + ' Message: ' + result.responseText);
+        }
+
+    </script>
+</body>
+</html>
