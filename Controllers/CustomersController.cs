@@ -26,7 +26,7 @@ namespace WebApiAssignment.Controllers
         }
 
         // GET: api/Customers/3
-        // List given customer
+        // List given customer details
         [HttpGet]
         public HttpResponseMessage GetCustomer(int id)
         {
@@ -35,12 +35,14 @@ namespace WebApiAssignment.Controllers
                 customers = cService.Customers();
                 var customer = customers.CList.FirstOrDefault((c) => c.CustomerID == id);
 
+                // If customer not exist, return Status 404 and a descriptive message
                 if (customer == null)
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound, "CustomerID: " + id.ToString() + " not found!");
                 }
                 else
                 {
+                    // If customer exits, return Status 200 and customer object
                     return Request.CreateResponse(HttpStatusCode.OK, customer);
                 }
             }

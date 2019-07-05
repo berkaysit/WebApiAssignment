@@ -14,5 +14,7 @@ namespace WebApiAssignment.Models
         }
         public int TransferAmount { get; set; }
         public string TransferDate { get; set; }
+        public int AccountNo { get; set; }
+
     }
 }

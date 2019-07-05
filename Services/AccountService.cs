@@ -9,6 +9,9 @@ namespace WebApiAssignment.Services
 {
     public class AccountService : IAccountService
     {
+        // Interface for TransactionService()
+        ITransactionService _transService = new TransactionService();
+        // AccountNo sequence variable
         private static int generatedAccountNumber = 0;
 
         // Create a new account for given customerID. Check if account will have an initial credit after creation.
@@ -35,13 +38,9 @@ namespace WebApiAssignment.Services
             {
                 // Perform transfer operations
                 // Make the transaction
-                TransactionService.MakeTransfer(customerID, newAccount.AccountNo, initialCredit, customers);
+                _transService.MakeTransfer(newAccount.AccountNo, initialCredit, customers);
             }
-            else
-            {
-                // Transfer not required
-                Console.WriteLine("Para sıfır! Aktarmadım!");
-            }
+            
             return newAccount;
         }
         // Generate a sequence / get the next value to use as a unique account number
